@@ -20,6 +20,7 @@ static size_t len(const char *const s) {
     i++;
   return i;
 }
+
 static u8 streq(const char *const a, const char *const b, const size_t n) {
   if (a == b)
     return 1;
