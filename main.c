@@ -194,7 +194,8 @@ int main(int argc, char **argv) {
 
       if (toc_index > headings_count &&
           ((heading_text.size == 3 &&
-            streq("TOC", heading_text.data, heading_text.size)) ||
+            (streq("ToC", heading_text.data, heading_text.size) ||
+             streq("TOC", heading_text.data, heading_text.size))) ||
            (heading_text.size == 17 &&
             streq("Table of Contents", heading_text.data, heading_text.size)) ||
            (heading_text.size == 8 &&
