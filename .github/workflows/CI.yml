@@ -1,0 +1,98 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    name: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - macos-14
+          - macos-15
+          - macos-26
+          - windows-2022
+          - windows-2025
+          - windows-2025-vs2026
+        mode: [Debug, Release]
+        include:
+          - os: ubuntu-22.04
+            mode: Debug
+            artifact_name: tocu-x86_64-ubuntu-22-debug
+            artifact_path: build/tocu
+          - os: ubuntu-22.04
+            mode: Release
+            artifact_name: tocu-x86_64-ubuntu-22
+            artifact_path: build/tocu
+          - os: ubuntu-24.04
+            mode: Debug
+            artifact_name: tocu-x86_64-ubuntu-24-debug
+            artifact_path: build/tocu
+          - os: ubuntu-24.04
+            mode: Release
+            artifact_name: tocu-x86_64-ubuntu-24
+            artifact_path: build/tocu
+          - os: macos-14
+            mode: Debug
+            artifact_name: tocu-arm64-macos-14-debug
+            artifact_path: build/tocu
+          - os: macos-14
+            mode: Release
+            artifact_name: tocu-arm64-macos-14
+            artifact_path: build/tocu
+          - os: macos-15
+            mode: Debug
+            artifact_name: tocu-arm64-macos-15-debug
+            artifact_path: build/tocu
+          - os: macos-15
+            mode: Release
+            artifact_name: tocu-arm64-macos-15
+            artifact_path: build/tocu
+          - os: macos-26
+            mode: Debug
+            artifact_name: tocu-arm64-macos-26-debug
+            artifact_path: build/tocu
+          - os: macos-26
+            mode: Release
+            artifact_name: tocu-arm64-macos-26
+            artifact_path: build/tocu
+          - os: windows-2022
+            mode: Debug
+            artifact_name: tocu-x86_64-win32-2022-vs2022-debug
+            artifact_path: build/Debug/*
+          - os: windows-2022
+            mode: Release
+            artifact_name: tocu-x86_64-win32-2022-vs2022
+            artifact_path: build/Release/*
+          - os: windows-2025
+            mode: Debug
+            artifact_name: tocu-x86_64-win32-vs2022-debug
+            artifact_path: build/Debug/*
+          - os: windows-2025
+            mode: Release
+            artifact_name: tocu-x86_64-win32-vs2022
+            artifact_path: build/Release/*
+          - os: windows-2025-vs2026
+            mode: Debug
+            artifact_name: tocu-x86_64-win32-vs2026-debug
+            artifact_path: build/Debug/*
+          - os: windows-2025-vs2026
+            mode: Release
+            artifact_name: tocu-x86_64-win32-vs2026
+            artifact_path: build/Release/*
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - name: Configure
+        run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.mode }} -Bbuild
+      - name: Build
+        run: cmake --build build --config ${{ matrix.mode }}
+      - name: Upload
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}
