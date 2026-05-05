@@ -16,6 +16,7 @@ jobs:
           - windows-2025
           - windows-2025-vs2026
         mode: [Debug, Release]
+        compiler: [System, TinyCC]
         include:
           - os: ubuntu-22.04
             artifact_name: tocu-x86_64-ubuntu-22
@@ -33,18 +34,33 @@ jobs:
             artifact_name: tocu-x86_64-win32-vs2022
           - os: windows-2025-vs2026
             artifact_name: tocu-x86_64-win32-vs2026
+        exclude:
+          - { os: macos-14, compiler: TinyCC }
+          - { os: macos-15, compiler: TinyCC }
+          - { os: macos-26, compiler: TinyCC }
+          - os: windows-2022
+            compiler: TinyCC
+          - os: windows-2025
+            compiler: TinyCC
+          - os: windows-2025-vs2026
+            compiler: TinyCC
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Dependencies
+        if: ${{ matrix.compiler == 'TinyCC' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install tcc
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
       - name: Configure
-        run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.mode }} -Bbuild
+        run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.mode }}${{ matrix.compiler == 'TinyCC' && ' -DCMAKE_C_COMPILER=tcc' || '' }} -Bbuild
       - name: Build
         run: cmake --build build --config ${{ matrix.mode }}
       - name: Upload
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.mode == 'Debug' && format('{0}-debug', matrix.artifact_name) || matrix.artifact_name }}
+          name: ${{ format('{0}{1}{2}', matrix.artifact_name, matrix.compiler == 'TinyCC' && '-tcc' || '', matrix.mode == 'Debug' && '-debug' || '') }}
           path: ${{ startsWith(matrix.os, 'windows-') && format('build/{0}/*', matrix.mode) || 'build/tocu' }}
