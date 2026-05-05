@@ -9,7 +9,9 @@ endif()
 add_executable(tocu main.c)
 
 if(APPLE OR LINUX)
-    set(CMAKE_C_FLAGS_DEBUG -fsanitize=address)
+    if(NOT (APPLE AND CMAKE_C_COMPILER_ID STREQUAL "GNU"))
+        set(CMAKE_C_FLAGS_DEBUG -fsanitize=address)
+    endif()
     target_compile_options(tocu PRIVATE
         -Wall
         -Wextra

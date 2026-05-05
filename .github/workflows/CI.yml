@@ -16,7 +16,7 @@ jobs:
           - windows-2025
           - windows-2025-vs2026
         mode: [Debug,  Release]
-        compiler: [System, TinyCC, Clang13, Clang14, Clang15, Clang16, Clang17, Clang18]
+        compiler: [System, TinyCC, GCC13, GCC14, GCC15, Clang13, Clang14, Clang15, Clang16, Clang17, Clang18]
         include:
           - { os: ubuntu-22.04,        artifact_name: tocu-x86_64-ubuntu-22         }
           - { os: ubuntu-24.04,        artifact_name: tocu-x86_64-ubuntu-24         }
@@ -33,6 +33,21 @@ jobs:
           - { os: windows-2022,        compiler: TinyCC  }
           - { os: windows-2025,        compiler: TinyCC  }
           - { os: windows-2025-vs2026, compiler: TinyCC  }
+          - { os: ubuntu-22.04,        compiler: GCC13   }
+          - { os: ubuntu-24.04,        compiler: GCC13   }
+          - { os: windows-2022,        compiler: GCC13   }
+          - { os: windows-2025,        compiler: GCC13   }
+          - { os: windows-2025-vs2026, compiler: GCC13   }
+          - { os: ubuntu-22.04,        compiler: GCC14   }
+          - { os: ubuntu-24.04,        compiler: GCC14   }
+          - { os: windows-2022,        compiler: GCC14   }
+          - { os: windows-2025,        compiler: GCC14   }
+          - { os: windows-2025-vs2026, compiler: GCC14   }
+          - { os: ubuntu-22.04,        compiler: GCC15   }
+          - { os: ubuntu-24.04,        compiler: GCC15   }
+          - { os: windows-2022,        compiler: GCC15   }
+          - { os: windows-2025,        compiler: GCC15   }
+          - { os: windows-2025-vs2026, compiler: GCC15   }
           - { os: ubuntu-22.04,        compiler: Clang16 }
           - { os: ubuntu-22.04,        compiler: Clang17 }
           - { os: ubuntu-22.04,        compiler: Clang18 }
@@ -89,7 +104,10 @@ jobs:
           fetch-depth: 1
       - name: Configure
         run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.mode }}${{
-          matrix.compiler == 'TinyCC'  && ' -DCMAKE_C_COMPILER=tcc' ||
+          matrix.compiler == 'TinyCC'  && ' -DCMAKE_C_COMPILER=tcc'      ||
+          matrix.compiler == 'GCC13'   && ' -DCMAKE_C_COMPILER=gcc-13'   ||
+          matrix.compiler == 'GCC14'   && ' -DCMAKE_C_COMPILER=gcc-14'   ||
+          matrix.compiler == 'GCC15'   && ' -DCMAKE_C_COMPILER=gcc-15'   ||
           matrix.compiler == 'Clang13' && ' -DCMAKE_C_COMPILER=clang-13' ||
           matrix.compiler == 'Clang14' && ' -DCMAKE_C_COMPILER=clang-14' ||
           matrix.compiler == 'Clang15' && ' -DCMAKE_C_COMPILER=clang-15' ||
@@ -107,7 +125,10 @@ jobs:
             format(
               '{0}{1}{2}',
               matrix.artifact_name,
-              matrix.compiler == 'TinyCC' && '-tcc' ||
+              matrix.compiler == 'TinyCC'  && '-tcc'     ||
+              matrix.compiler == 'GCC13'   && '-gcc13'   ||
+              matrix.compiler == 'GCC14'   && '-gcc14'   ||
+              matrix.compiler == 'GCC15'   && '-gcc15'   ||
               matrix.compiler == 'Clang13' && '-clang13' ||
               matrix.compiler == 'Clang14' && '-clang14' ||
               matrix.compiler == 'Clang15' && '-clang15' ||
