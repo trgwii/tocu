@@ -7,94 +7,137 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-22.04
-          - ubuntu-24.04
           - macos-14
           - macos-15
           - macos-26
+          - ubuntu-22.04
+          - ubuntu-24.04
           - windows-2022
           - windows-2025
           - windows-2025-vs2026
-        mode: [Debug,  Release]
-        compiler: [System, TinyCC, GCC13, GCC14, GCC15, Clang13, Clang14, Clang15, Clang16, Clang17, Clang18]
-        include:
-          - { os: ubuntu-22.04,        artifact_name: tocu-x86_64-ubuntu-22         }
-          - { os: ubuntu-24.04,        artifact_name: tocu-x86_64-ubuntu-24         }
-          - { os: macos-14,            artifact_name: tocu-arm64-macos-14           }
-          - { os: macos-15,            artifact_name: tocu-arm64-macos-15           }
-          - { os: macos-26,            artifact_name: tocu-arm64-macos-26           }
-          - { os: windows-2022,        artifact_name: tocu-x86_64-win32-2022-vs2022 }
-          - { os: windows-2025,        artifact_name: tocu-x86_64-win32-vs2022      }
-          - { os: windows-2025-vs2026, artifact_name: tocu-x86_64-win32-vs2026      }
+        mode:
+          - Debug
+          - Release
+        cc:
+          - clang-13
+          - clang-14
+          - clang-15
+          - clang-16
+          - clang-17
+          - clang-18
+          - clang-20
+          - gcc-10
+          - gcc-11
+          - gcc-12
+          - gcc-13
+          - gcc-14
+          - gcc-15
+          - tcc
+          - vs2022
+          - vs2026
         exclude:
-          - { os: macos-14,            compiler: TinyCC  }
-          - { os: macos-15,            compiler: TinyCC  }
-          - { os: macos-26,            compiler: TinyCC  }
-          - { os: windows-2022,        compiler: TinyCC  }
-          - { os: windows-2025,        compiler: TinyCC  }
-          - { os: windows-2025-vs2026, compiler: TinyCC  }
-          - { os: ubuntu-22.04,        compiler: GCC13   }
-          - { os: ubuntu-24.04,        compiler: GCC13   }
-          - { os: windows-2022,        compiler: GCC13   }
-          - { os: windows-2025,        compiler: GCC13   }
-          - { os: windows-2025-vs2026, compiler: GCC13   }
-          - { os: ubuntu-22.04,        compiler: GCC14   }
-          - { os: ubuntu-24.04,        compiler: GCC14   }
-          - { os: windows-2022,        compiler: GCC14   }
-          - { os: windows-2025,        compiler: GCC14   }
-          - { os: windows-2025-vs2026, compiler: GCC14   }
-          - { os: ubuntu-22.04,        compiler: GCC15   }
-          - { os: ubuntu-24.04,        compiler: GCC15   }
-          - { os: windows-2022,        compiler: GCC15   }
-          - { os: windows-2025,        compiler: GCC15   }
-          - { os: windows-2025-vs2026, compiler: GCC15   }
-          - { os: ubuntu-22.04,        compiler: Clang16 }
-          - { os: ubuntu-22.04,        compiler: Clang17 }
-          - { os: ubuntu-22.04,        compiler: Clang18 }
-          - { os: ubuntu-24.04,        compiler: Clang13 }
-          - { os: ubuntu-24.04,        compiler: Clang14 }
-          - { os: ubuntu-24.04,        compiler: Clang15 }
-          - { os: macos-14,            compiler: Clang13 }
-          - { os: macos-15,            compiler: Clang13 }
-          - { os: macos-26,            compiler: Clang13 }
-          - { os: windows-2022,        compiler: Clang13 }
-          - { os: windows-2025,        compiler: Clang13 }
-          - { os: windows-2025-vs2026, compiler: Clang13 }
-          - { os: macos-14,            compiler: Clang14 }
-          - { os: macos-15,            compiler: Clang14 }
-          - { os: macos-26,            compiler: Clang14 }
-          - { os: windows-2022,        compiler: Clang14 }
-          - { os: windows-2025,        compiler: Clang14 }
-          - { os: windows-2025-vs2026, compiler: Clang14 }
-          - { os: macos-14,            compiler: Clang15 }
-          - { os: macos-15,            compiler: Clang15 }
-          - { os: macos-26,            compiler: Clang15 }
-          - { os: windows-2022,        compiler: Clang15 }
-          - { os: windows-2025,        compiler: Clang15 }
-          - { os: windows-2025-vs2026, compiler: Clang15 }
-          - { os: macos-14,            compiler: Clang16 }
-          - { os: macos-15,            compiler: Clang16 }
-          - { os: macos-26,            compiler: Clang16 }
-          - { os: windows-2022,        compiler: Clang16 }
-          - { os: windows-2025,        compiler: Clang16 }
-          - { os: windows-2025-vs2026, compiler: Clang16 }
-          - { os: macos-14,            compiler: Clang17 }
-          - { os: macos-15,            compiler: Clang17 }
-          - { os: macos-26,            compiler: Clang17 }
-          - { os: windows-2022,        compiler: Clang17 }
-          - { os: windows-2025,        compiler: Clang17 }
-          - { os: windows-2025-vs2026, compiler: Clang17 }
-          - { os: macos-14,            compiler: Clang18 }
-          - { os: macos-15,            compiler: Clang18 }
-          - { os: macos-26,            compiler: Clang18 }
-          - { os: windows-2022,        compiler: Clang18 }
-          - { os: windows-2025,        compiler: Clang18 }
-          - { os: windows-2025-vs2026, compiler: Clang18 }
+          - { os: macos-14, cc: clang-13 }
+          - { os: macos-14, cc: clang-14 }
+          - { os: macos-14, cc: clang-16 }
+          - { os: macos-14, cc: clang-17 }
+          - { os: macos-14, cc: clang-18 }
+          - { os: macos-14, cc: clang-20 }
+          - { os: macos-14, cc: gcc-10 }
+          - { os: macos-14, cc: gcc-10 }
+          - { os: macos-14, cc: gcc-11 }
+          - { os: macos-14, cc: gcc-11 }
+          - { os: macos-14, cc: gcc-12 }
+          - { os: macos-14, cc: gcc-12 }
+          - { os: macos-14, cc: tcc }
+          - { os: macos-14, cc: vs2022 }
+          - { os: macos-14, cc: vs2026 }
+          - { os: macos-15, cc: clang-13 }
+          - { os: macos-15, cc: clang-14 }
+          - { os: macos-15, cc: clang-15 }
+          - { os: macos-15, cc: clang-16 }
+          - { os: macos-15, cc: clang-20 }
+          - { os: macos-15, cc: gcc-10 }
+          - { os: macos-15, cc: gcc-11 }
+          - { os: macos-15, cc: gcc-12 }
+          - { os: macos-15, cc: tcc }
+          - { os: macos-15, cc: vs2022 }
+          - { os: macos-15, cc: vs2026 }
+          - { os: macos-26, cc: clang-13 }
+          - { os: macos-26, cc: clang-14 }
+          - { os: macos-26, cc: clang-15 }
+          - { os: macos-26, cc: clang-16 }
+          - { os: macos-26, cc: clang-18 }
+          - { os: macos-26, cc: gcc-10 }
+          - { os: macos-26, cc: gcc-11 }
+          - { os: macos-26, cc: gcc-12 }
+          - { os: macos-26, cc: tcc }
+          - { os: macos-26, cc: vs2022 }
+          - { os: macos-26, cc: vs2026 }
+          - { os: ubuntu-22.04, cc: clang-16 }
+          - { os: ubuntu-22.04, cc: clang-17 }
+          - { os: ubuntu-22.04, cc: clang-18 }
+          - { os: ubuntu-22.04, cc: clang-20 }
+          - { os: ubuntu-22.04, cc: gcc-13 }
+          - { os: ubuntu-22.04, cc: gcc-14 }
+          - { os: ubuntu-22.04, cc: gcc-15 }
+          - { os: ubuntu-22.04, cc: vs2022 }
+          - { os: ubuntu-22.04, cc: vs2026 }
+          - { os: ubuntu-24.04, cc: clang-13 }
+          - { os: ubuntu-24.04, cc: clang-14 }
+          - { os: ubuntu-24.04, cc: clang-15 }
+          - { os: ubuntu-24.04, cc: clang-20 }
+          - { os: ubuntu-24.04, cc: gcc-10 }
+          - { os: ubuntu-24.04, cc: gcc-11 }
+          - { os: ubuntu-24.04, cc: gcc-15 }
+          - { os: ubuntu-24.04, cc: vs2022 }
+          - { os: ubuntu-24.04, cc: vs2026 }
+          - { os: windows-2022, cc: clang-13 }
+          - { os: windows-2022, cc: clang-14 }
+          - { os: windows-2022, cc: clang-15 }
+          - { os: windows-2022, cc: clang-16 }
+          - { os: windows-2022, cc: clang-17 }
+          - { os: windows-2022, cc: clang-18 }
+          - { os: windows-2022, cc: gcc-10 }
+          - { os: windows-2022, cc: gcc-11 }
+          - { os: windows-2022, cc: gcc-12 }
+          - { os: windows-2022, cc: gcc-13 }
+          - { os: windows-2022, cc: gcc-14 }
+          - { os: windows-2022, cc: gcc-15 }
+          - { os: windows-2022, cc: tcc }
+          - { os: windows-2022, cc: vs2026 }
+          - { os: windows-2025-vs2026, cc: clang-13 }
+          - { os: windows-2025-vs2026, cc: clang-14 }
+          - { os: windows-2025-vs2026, cc: clang-15 }
+          - { os: windows-2025-vs2026, cc: clang-16 }
+          - { os: windows-2025-vs2026, cc: clang-17 }
+          - { os: windows-2025-vs2026, cc: clang-18 }
+          - { os: windows-2025-vs2026, cc: gcc-10 }
+          - { os: windows-2025-vs2026, cc: gcc-11 }
+          - { os: windows-2025-vs2026, cc: gcc-12 }
+          - { os: windows-2025-vs2026, cc: gcc-13 }
+          - { os: windows-2025-vs2026, cc: gcc-14 }
+          - { os: windows-2025-vs2026, cc: gcc-15 }
+          - { os: windows-2025-vs2026, cc: tcc }
+          - { os: windows-2025-vs2026, cc: vs2022 }
+          - { os: windows-2025, cc: clang-13 }
+          - { os: windows-2025, cc: clang-14 }
+          - { os: windows-2025, cc: clang-15 }
+          - { os: windows-2025, cc: clang-16 }
+          - { os: windows-2025, cc: clang-17 }
+          - { os: windows-2025, cc: clang-18 }
+          - { os: windows-2025, cc: gcc-10 }
+          - { os: windows-2025, cc: gcc-11 }
+          - { os: windows-2025, cc: gcc-12 }
+          - { os: windows-2025, cc: gcc-13 }
+          - { os: windows-2025, cc: gcc-14 }
+          - { os: windows-2025, cc: gcc-15 }
+          - { os: windows-2025, cc: tcc }
+          - { os: windows-2025, cc: vs2026 }
 
     runs-on: ${{ matrix.os }}
     steps:
       - name: Dependencies
-        if: ${{ matrix.compiler == 'TinyCC' }}
+        if: ${{ matrix.cc == 'tcc' }}
         run: |
           sudo apt-get update
           sudo apt-get -y install tcc
@@ -102,18 +145,28 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
+      - name: Check stuff
+        if: ${{ matrix.os == 'macos-15' && matrix.cc == 'clang-18' }}
+        run: echo $(brew --prefix llvm@18)/bin/clang
+      - name: Check stuff 2
+        if: ${{ matrix.os == 'macos-26' && matrix.cc == 'clang-20' }}
+        run: echo $(brew --prefix llvm@20)/bin/clang
       - name: Configure
         run: cmake -DCMAKE_BUILD_TYPE=${{ matrix.mode }}${{
-          matrix.compiler == 'TinyCC'  && ' -DCMAKE_C_COMPILER=tcc'      ||
-          matrix.compiler == 'GCC13'   && ' -DCMAKE_C_COMPILER=gcc-13'   ||
-          matrix.compiler == 'GCC14'   && ' -DCMAKE_C_COMPILER=gcc-14'   ||
-          matrix.compiler == 'GCC15'   && ' -DCMAKE_C_COMPILER=gcc-15'   ||
-          matrix.compiler == 'Clang13' && ' -DCMAKE_C_COMPILER=clang-13' ||
-          matrix.compiler == 'Clang14' && ' -DCMAKE_C_COMPILER=clang-14' ||
-          matrix.compiler == 'Clang15' && ' -DCMAKE_C_COMPILER=clang-15' ||
-          matrix.compiler == 'Clang16' && ' -DCMAKE_C_COMPILER=clang-16' ||
-          matrix.compiler == 'Clang17' && ' -DCMAKE_C_COMPILER=clang-17' ||
-          matrix.compiler == 'Clang18' && ' -DCMAKE_C_COMPILER=clang-18' ||
+          matrix.cc == 'clang-13' && ' -DCMAKE_C_COMPILER=clang-13'                                                                                          ||
+          matrix.cc == 'clang-14' && ' -DCMAKE_C_COMPILER=clang-14'                                                                                          ||
+          matrix.cc == 'clang-15' && (matrix.os == 'macos-14' && ' -DCMAKE_C_COMPILER=clang' || ' -DCMAKE_C_COMPILER=clang-15')                              ||
+          matrix.cc == 'clang-16' && ' -DCMAKE_C_COMPILER=clang-16'                                                                                          ||
+          matrix.cc == 'clang-17' && ((matrix.os == 'macos-15' || matrix.os == 'macos-26') && ' -DCMAKE_C_COMPILER=clang' || ' -DCMAKE_C_COMPILER=clang-17') ||
+          matrix.cc == 'clang-18' && (matrix.os == 'macos-15' && ' -DCMAKE_C_COMPILER=$(brew --prefix llvm@18)/bin/clang' || ' -DCMAKE_C_COMPILER=clang-18') ||
+          matrix.cc == 'clang-20' && (matrix.os == 'macos-26' && ' -DCMAKE_C_COMPILER=$(brew --prefix llvm@20)/bin/clang' || ' -DCMAKE_C_COMPILER=clang-20') ||
+          matrix.cc == 'gcc-10'   && ' -DCMAKE_C_COMPILER=gcc-10'                                                                                            ||
+          matrix.cc == 'gcc-11'   && ' -DCMAKE_C_COMPILER=gcc-11'                                                                                            ||
+          matrix.cc == 'gcc-12'   && ' -DCMAKE_C_COMPILER=gcc-12'                                                                                            ||
+          matrix.cc == 'gcc-13'   && ' -DCMAKE_C_COMPILER=gcc-13'                                                                                            ||
+          matrix.cc == 'gcc-14'   && ' -DCMAKE_C_COMPILER=gcc-14'                                                                                            ||
+          matrix.cc == 'gcc-15'   && ' -DCMAKE_C_COMPILER=gcc-15'                                                                                            ||
+          matrix.cc == 'tcc'      && ' -DCMAKE_C_COMPILER=tcc'                                                                                               ||
           ''
           }} -Bbuild
       - name: Build
@@ -123,20 +176,11 @@ jobs:
         with:
           name: ${{
             format(
-              '{0}{1}{2}',
-              matrix.artifact_name,
-              matrix.compiler == 'TinyCC'  && '-tcc'     ||
-              matrix.compiler == 'GCC13'   && '-gcc13'   ||
-              matrix.compiler == 'GCC14'   && '-gcc14'   ||
-              matrix.compiler == 'GCC15'   && '-gcc15'   ||
-              matrix.compiler == 'Clang13' && '-clang13' ||
-              matrix.compiler == 'Clang14' && '-clang14' ||
-              matrix.compiler == 'Clang15' && '-clang15' ||
-              matrix.compiler == 'Clang16' && '-clang16' ||
-              matrix.compiler == 'Clang17' && '-clang17' ||
-              matrix.compiler == 'Clang18' && '-clang18' ||
-              '',
-              matrix.mode == 'Debug' && '-debug' || ''
+            'tocu-{0}-{1}-{2}{3}',
+            matrix.os,
+            runner.arch,
+            matrix.cc,
+            matrix.mode == 'Debug' && '-debug' || ''
             )
             }}
           path: ${{ startsWith(matrix.os, 'windows-') && format('build/{0}/*', matrix.mode) || 'build/tocu' }}
