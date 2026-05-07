@@ -122,21 +122,21 @@ static void write_slug(FILE *out, Str string, unsigned duplicate) {
 
 static Heading headings[MAX_HEADINGS];
 
-#define HELP_TEXT                                                              \
-  ("Formats a Table of Contents section within a README.md file according to " \
-   "the headings inside the markdown file\n"                                   \
-   "Usage: `tocu <args>`\n"                                                    \
-   "Args:\n"                                                                   \
-   "\t-h, --help        Show this text and exit\n"                             \
-   "\t-s, --silent      Don't output information on the detected headings "    \
-   "during a normal run\n"                                                     \
-   "\t-b, --bullet      Use bulleted markdown lists instead of numeric\n"      \
-   "\t--skip-toc        Don't include the table of contents heading inside "   \
-   "itself\n"                                                                  \
-   "\t--min-level <1-6> Set the minimum heading level to include in the "      \
-   "table of contents. This can be set to 2 to not include the toplevel "      \
-   "heading / document title.\n"                                               \
-   "")
+static const char *help_text =
+    "Formats a Table of Contents section within a README.md file according to "
+    "the headings inside the markdown file\n"
+    "Usage: `tocu <args>`\n"
+    "Args:\n"
+    "\t-h, --help        Show this text and exit\n"
+    "\t-s, --silent      Don't output information on the detected headings "
+    "during a normal run\n"
+    "\t-b, --bullet      Use bulleted markdown lists instead of numeric\n"
+    "\t--skip-toc        Don't include the table of contents heading inside "
+    "itself\n"
+    "\t--min-level <1-6> Set the minimum heading level to include in the table "
+    "of contents. This can be set to 2 to not include the toplevel heading / "
+    "document title.\n"
+    "";
 
 int main(int argc, char **argv) {
   (void)argc;
@@ -165,7 +165,7 @@ int main(int argc, char **argv) {
       filename = argv[i];
   }
   if (help) {
-    fprintf(stdout, HELP_TEXT);
+    fputs(help_text, stdout);
     return EXIT_FAILURE;
   }
   if (!filename)
