@@ -96,7 +96,7 @@ static void write_slug(FILE *out, Str string, unsigned duplicate) {
   for (size_t i = 0; i < string.size; i++) {
     char c = string.data[i];
     if (c == '.' || c == ',' || c == '(' || c == ')' || c == '#' || c == '`' ||
-        c == '/')
+        c == '/' || c == '\'')
       continue;
     if (c == ' ') {
       if (off == sizeof buf) { // flush

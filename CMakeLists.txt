@@ -6,13 +6,11 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_executable(tocu main.c)
-
 if(APPLE OR LINUX)
     if(NOT (APPLE AND CMAKE_C_COMPILER_ID STREQUAL "GNU"))
         set(CMAKE_C_FLAGS_DEBUG -fsanitize=address)
     endif()
-    target_compile_options(tocu PRIVATE
+    set(CFLAGS
         -Wall
         -Wextra
         -Wpedantic
@@ -26,7 +24,7 @@ if(APPLE OR LINUX)
         -Wconversion
     )
 elseif(WIN32)
-    target_compile_options(tocu PRIVATE
+    set(CFLAGS
         /Wall
         /WX
         /wd4710 # "function not inlined"
@@ -35,6 +33,9 @@ elseif(WIN32)
         /wd5045 # "Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified"
     )
 endif()
+
+add_executable(tocu main.c)
+target_compile_options(tocu PRIVATE ${CFLAGS})
 
 set_target_properties(tocu PROPERTIES
     C_EXTENSIONS OFF

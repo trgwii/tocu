@@ -1,8 +1,6 @@
-name: CI
 on: [push, pull_request]
 jobs:
   build:
-    name: build
     strategy:
       fail-fast: false
       matrix:
